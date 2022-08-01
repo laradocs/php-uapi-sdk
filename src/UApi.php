@@ -44,9 +44,6 @@ class UApi
      * @param  string  $mobile
      * @param  string  $content
      * @return array
-     * @throws GuzzleException
-     * @throws HttpException
-     * @throws MissingArgumentException
      */
     public function sms(array $params): array
     {
