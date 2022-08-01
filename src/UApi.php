@@ -32,6 +32,37 @@ class UApi
     }
 
     /**
+     * 发送短信
+     *
+     * @param string $mobile
+     * @param string $content
+     * @return array
+     */
+    public function sms(array $params): array
+    {
+        $this->checkRequireParameters(['mobile', 'content'], $params);
+        try {
+            $json = $this->client()
+                ->post('sms', [
+                    RequestOptions::JSON => [
+                        'biz_content' => [
+                            'mobile' => $params['mobile'],
+                            'content' => $params['content'],
+                        ],
+                        'agent_id' => $this->config->getAgentId(),
+                        'sign' => $this->sign($params),
+                    ]
+                ])->getBody()
+                ->getContents();
+            $data = Json::decode($json);
+
+            return $data['code'] ? $data['data'] : throw new Exception($data['msg'], $data['code']);
+        } catch (Exception $e) {
+            throw new HttpException($e->getMessage(), $e->getCode(), $e);
+        }
+    }
+
+    /**
      * 实名认证
      *
      * @param  string  $cardno  身份证号码
