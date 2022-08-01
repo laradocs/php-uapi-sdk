@@ -1,0 +1,23 @@
+{
+    "name": "laradocs/uapi",
+    "description": "UApi SDK",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Laradocs\\Uapi\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Tall",
+            "email": "75692074@qq.com",
+            "homepage": "https://github.com/laradocs"
+        }
+    ],
+    "require": {
+        "php": ">=8.0",
+        "guzzlehttp/guzzle": "^7.4",
+        "ext-json": "*"
+    }
+}
