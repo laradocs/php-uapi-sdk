@@ -83,7 +83,8 @@ class UApi
                         'agent_id' => $this->config->getAgentId(),
                         'sign' => $this->sign($params),
                     ]
-                ])->getBody()
+                ]
+                )->getBody()
                 ->getContents();
             $data = Json::decode($json);
 
@@ -94,10 +95,48 @@ class UApi
     }
 
     /**
+     * 联行号查询
+     *
+     * @param string $card 银行卡号
+     * @param string $city 城市名
+     * @param string $province 省份
+     * @param string $key 关键字
+     * @return array
+     */
+    public function bankaps(array $params): array
+    {
+        $this->checkRequireParameters(['card', 'city', 'province'], $params);
+        try {
+            $json = $this->client()
+                ->post(
+                    'bankaps',
+                    [
+                        RequestOptions::JSON => [
+                            'biz_content' => [
+                                'card' => $params['card'],
+                                'city' => $params['city'],
+                                'province' => $params['province'],
+                            ],
+                            'agent_id' => $this->config->getAgentId(),
+                            'sign' => $this->sign($params),
+                        ]
+                    ]
+                )->getBody()
+                ->getContents();
+            $data = Json::decode($json);
+
+            return $data['code'] ? $data['data'] : throw new Exception($data[msg], $data['code']);
+        } catch (Exception $e) {
+            throw new HttpException($e->getMessage(), $e->getCode(), $e);
+        }
+    }
+
+
+    /**
      * 验证参数
      *
-     * @param  array  $required
-     * @param  array  $params
+     * @param array $required
+     * @param array $params
      * @return void
      * @throws MissingArgumentException
      */
