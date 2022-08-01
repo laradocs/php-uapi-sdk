@@ -9,6 +9,7 @@ use Laradocs\Uapi\Exceptions\MissingArgumentException;
 use Laradocs\Uapi\Traits\HasSignature;
 use Exception;
 use Laradocs\Uapi\Utils\Json;
+use GuzzleHttp\Exception\GuzzleException;
 
 class UApi
 {
@@ -34,9 +35,12 @@ class UApi
     /**
      * 发送短信
      *
-     * @param string $mobile
-     * @param string $content
+     * @param  string  $mobile
+     * @param  string  $content
      * @return array
+     * @throws GuzzleException
+     * @throws HttpException
+     * @throws MissingArgumentException
      */
     public function sms(array $params): array
     {
@@ -68,6 +72,9 @@ class UApi
      * @param  string  $cardno  身份证号码
      * @param  string  $name  姓名
      * @return array
+     * @throws HttpException
+     * @throws MissingArgumentException
+     * @throws GuzzleException
      */
     public function idcard(array $params): array
     {
@@ -75,15 +82,15 @@ class UApi
         try {
             $json = $this->client()
                 ->post('idcard', [
-                    RequestOptions::JSON => [
-                        'biz_content' => [
-                            'cardno' => $params['cardno'],
-                            'name' => $params['name'],
-                        ],
-                        'agent_id' => $this->config->getAgentId(),
-                        'sign' => $this->sign($params),
+                        RequestOptions::JSON => [
+                            'biz_content' => [
+                                'cardno' => $params['cardno'],
+                                'name' => $params['name'],
+                            ],
+                            'agent_id' => $this->config->getAgentId(),
+                            'sign' => $this->sign($params),
+                        ]
                     ]
-                ]
                 )->getBody()
                 ->getContents();
             $data = Json::decode($json);
@@ -97,15 +104,18 @@ class UApi
     /**
      * 联行号查询
      *
-     * @param string $card 银行卡号
-     * @param string $city 城市名
-     * @param string $province 省份
-     * @param string $key 关键字
+     * @param  string  $card  银行卡号
+     * @param  string  $province  省份
+     * @param  string  $city  城市名
+     * @param  string  $key  关键字(非必填)
      * @return array
+     * @throws GuzzleException
+     * @throws HttpException
+     * @throws MissingArgumentException
      */
     public function bankaps(array $params): array
     {
-        $this->checkRequireParameters(['card', 'city', 'province'], $params);
+        $this->checkRequireParameters(['province', 'city', 'card'], $params);
         try {
             $json = $this->client()
                 ->post(
@@ -116,6 +126,7 @@ class UApi
                                 'card' => $params['card'],
                                 'city' => $params['city'],
                                 'province' => $params['province'],
+                                'key' => $params['key'] ?? '',
                             ],
                             'agent_id' => $this->config->getAgentId(),
                             'sign' => $this->sign($params),
@@ -125,18 +136,17 @@ class UApi
                 ->getContents();
             $data = Json::decode($json);
 
-            return $data['code'] ? $data['data'] : throw new Exception($data[msg], $data['code']);
+            return $data['code'] ? $data['data'] : throw new Exception($data['msg'], $data['code']);
         } catch (Exception $e) {
             throw new HttpException($e->getMessage(), $e->getCode(), $e);
         }
     }
 
-
     /**
      * 验证参数
      *
-     * @param array $required
-     * @param array $params
+     * @param  array  $required
+     * @param  array  $params
      * @return void
      * @throws MissingArgumentException
      */
