@@ -15,8 +15,14 @@ class UApi
 {
     use HasSignature;
 
+    /**
+     * @var Config
+     */
     protected Config $config;
 
+    /**
+     * @var string
+     */
     protected $baseUri = 'http://uapis.ten.sdream.top/apis/api';
 
     public function __construct(Config $config)
