@@ -9,6 +9,7 @@ use Laradocs\Uapi\Exceptions\MissingArgumentException;
 use Laradocs\Uapi\Traits\HasSignature;
 use Exception;
 use Laradocs\Uapi\Utils\Json;
+use GuzzleHttp\Exception\GuzzleException;
 
 class UApi
 {
@@ -37,6 +38,9 @@ class UApi
      * @param  string  $cardno  身份证号码
      * @param  string  $name  姓名
      * @return array
+     * @throws HttpException
+     * @throws MissingArgumentException
+     * @throws GuzzleException
      */
     public function idcard(array $params): array
     {
