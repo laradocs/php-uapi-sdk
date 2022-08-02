@@ -212,9 +212,8 @@ class UApi
      *
      * @param string $bankcard
      * @return array
-     * @throws GuzzleException
-     * @throws HttpException
      * @throws MissingArgumentException
+     * @throws HttpException
      */
     public function queryBankInfo(array $params): array
     {
@@ -242,9 +241,8 @@ class UApi
      *
      * @param string $type 快递公司代码（不传为获取快递公司列表）
      * @return array
-     * @throws GuzzleException
-     * @throws HttpException
      * @throws MissingArgumentException
+     * @throws HttpException
      */
     public function getExpressList(array $params): array
     {
@@ -275,9 +273,8 @@ class UApi
      * @param string $name 姓名
      * @param string $mobile 手机号码
      * @return array
-     * @throws GuzzleException
-     * @throws HttpException
      * @throws MissingArgumentException
+     * @throws HttpException
      */
     public function bank4Check(array $params): array
     {
