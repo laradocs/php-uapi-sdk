@@ -9,7 +9,6 @@ use Laradocs\Uapi\Exceptions\MissingArgumentException;
 use Laradocs\Uapi\Traits\HasSignature;
 use Exception;
 use Laradocs\Uapi\Utils\Json;
-use GuzzleHttp\Exception\GuzzleException;
 
 class UApi
 {
@@ -116,16 +115,16 @@ class UApi
      */
     public function bankaps(array $params): array
     {
-        $this->checkRequireParameters(['province', 'city', 'card'], $params);
+        $this->checkRequireParameters(['province', 'city', 'card', 'key'], $params);
         try {
             $json = $this->client()
                 ->post('bankaps', [
                         RequestOptions::JSON => [
                             'biz_content' => [
                                 'card' => $params['card'],
-                                'city' => $params['city'],
                                 'province' => $params['province'],
-                                'key' => $params['key'] ?? '',
+                                'city' => $params['city'],
+                                'key' => $params['key'],
                             ],
                             'agent_id' => $this->config->getAgentId(),
                             'sign' => $this->sign($params),
@@ -143,9 +142,9 @@ class UApi
     /**
      * 银行卡三要素认证
      *
-     * @param string $accountNo 银行卡号
-     * @param string $idCard 身份证号
-     * @param string $name 姓名
+     * @param  string  $accountNo  银行卡号
+     * @param  string  $idCard  身份证号
+     * @param  string  $name  姓名
      * @return array
      * @throws MissingArgumentException
      * @throws HttpException
@@ -178,15 +177,15 @@ class UApi
     /**
      * 物流查询
      *
-     * @param string $no 快递单号
-     * @param string $type 快递公司代码
+     * @param  string  $no  快递单号
+     * @param  string  $type  快递公司代码
      * @return array
      * @throws MissingArgumentException
      * @throws HttpException
      */
     public function express(array $params): array
     {
-        $this->checkRequireParameters(['no', 'type']);
+        $this->checkRequireParameters(['no', 'type'], $params);
         try {
             $json = $this->client()
                 ->post('express', [
@@ -210,20 +209,19 @@ class UApi
     /**
      * 银行卡信息查询
      *
-     * @param string $bankcard
+     * @param  string  $bankcard
      * @return array
      * @throws MissingArgumentException
      * @throws HttpException
      */
     public function queryBankInfo(array $params): array
     {
-        $this->checkRequireParameters(['bankcard'], $params);
         try {
             $json = $this->client()
                 ->post('queryBankInfo', [
                     RequestOptions::JSON => [
                         'biz_content' => [
-                            'bankcard' => $params['bankcard'],
+                            'bankcard' => $params['bankcard'] ?? '',
                         ],
                         'agent_id' => $this->config->getAgentId(),
                         'sign' => $this->sign($params),
@@ -239,7 +237,7 @@ class UApi
     /**
      * 获取快递公司信息
      *
-     * @param string $type 快递公司代码（不传为获取快递公司列表）
+     * @param  string  $type  快递公司代码（不传为获取快递公司列表）
      * @return array
      * @throws MissingArgumentException
      * @throws HttpException
@@ -268,10 +266,10 @@ class UApi
     /**
      * 银行卡四要素认证
      *
-     * @param string $accountNo 银行卡号
-     * @param string $idCard 身份证号
-     * @param string $name 姓名
-     * @param string $mobile 手机号码
+     * @param  string  $accountNo  银行卡号
+     * @param  string  $idCard  身份证号
+     * @param  string  $name  姓名
+     * @param  string  $mobile  手机号码
      * @return array
      * @throws MissingArgumentException
      * @throws HttpException
@@ -303,8 +301,8 @@ class UApi
     /**
      * 验证参数
      *
-     * @param array $required
-     * @param array $params
+     * @param  array  $required
+     * @param  array  $params
      * @return void
      * @throws MissingArgumentException
      */
@@ -325,7 +323,7 @@ class UApi
      * @param  string  $json
      * @return array
      */
-    protected function body(string $json): array
+    public function body(string $json): array
     {
         $data = Json::decode($json);
 

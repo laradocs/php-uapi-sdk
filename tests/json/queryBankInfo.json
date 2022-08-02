@@ -1,0 +1,21 @@
+{
+  "code": 1,
+  "data":  {
+    "bankname": "兴业银行",
+    "banknum": "0000000",
+    "cardprefixnum": "123456",
+    "cardname": "兴业卡(银联标准卡)",
+    "cardtype": "银联借记卡",
+    "cardprefixlength": 6,
+    "isLuhn": true,
+    "iscreditcard": 1,
+    "cardlength": 18,
+    "bankurl": "http://www.cib.com.cn/",
+    "enbankname": "Industrial Bank",
+    "abbreviation": "CIB",
+    "bankimage": "http://auth.apis.la/bank/11_CIB.png",
+    "servicephone": "95561",
+    "province": "江西省",
+    "city": "南昌市"
+  }
+}

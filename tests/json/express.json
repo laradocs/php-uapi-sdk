@@ -1,0 +1,24 @@
+{
+  "code": 1,
+  "data": {
+    "status": 1,
+    "data": {
+      "number": "75141039665226",
+      "type": "zto",
+      "list": [
+        {
+          "time": "2019-04-15 08:40:50",
+          "status": "【南昌市】  已签收, 签收人凭取货码签收, 如有疑问请电联: 15070082552 / 4006406999, 您的快递已经妥投。风里来雨里去, 只为客官您满意。上有老下有小, 赏个好评好不好？【请在评价快递员处帮忙点亮五颗星星哦~】"
+        }
+      ],
+      "deliverystatus": "3",
+      "issign": "1",
+      "expName": "中通快递",
+      "expSite": "www.zto.com",
+      "expPhone": "95311",
+      "logo": "http://img3.fegine.com/express/zto.jpg",
+      "courier": "",
+      "courierPhone": ""
+    }
+  }
+}

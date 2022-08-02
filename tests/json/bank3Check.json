@@ -1,0 +1,21 @@
+{
+  "code": 1,
+  "data": {
+    "status": "01",
+    "msg": "验证通过",
+    "idCard": "身份证号",
+    "accountNo": "银行卡号",
+    "bank": "兴业银行",
+    "cardName": "兴业卡(银联标准卡)",
+    "cardType": "借记卡",
+    "name": "张三",
+    "sex": "男",
+    "area": "湖北省黄冈市蕲春县",
+    "province": "湖北省",
+    "city": "黄冈市",
+    "prefecture": "蕲春县",
+    "birthday": "1970-01-01",
+    "addrCode": "000000",
+    "lastCode": "9"
+  }
+}
