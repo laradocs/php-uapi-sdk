@@ -182,7 +182,40 @@ class UApi
         }
     }
 
-    
+
+    /**
+     * 物流查询
+     *
+     * @param string $no 快递单号
+     * @param string $type 快递公司代码
+     * @return array
+     * @throws GuzzleException
+     * @throws HttpException
+     * @throws MissingArgumentException
+     */
+    public function express(array $params): array
+    {
+        $this->checkRequireParameters(['no', 'type']);
+        try {
+            $json = $this->client()
+                ->post('express', [
+                    RequestOptions::JSON => [
+                        'biz_content' => [
+                            'no' => $params['no'],
+                            'type' => $params['type'],
+                        ],
+                        'agent_id' => $this->config->getAgentId(),
+                        'sign' => $this->sign($params),
+                    ]
+                ])->getBody()
+                ->getContents();
+            $data = Json::decode($json);
+
+            return $data['code'] ? $data['data'] : throw new Exception($data['msg'], $data['code']);
+        } catch (Exception $e) {
+            throw new HttpException($e->getMessage(), $e->getCode(), $e);
+        }
+    }
 
     /**
      * 验证参数
