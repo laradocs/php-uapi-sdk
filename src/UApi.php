@@ -41,8 +41,8 @@ class UApi
     /**
      * 发送短信
      *
-     * @param  string  $mobile
-     * @param  string  $content
+     * @param string $mobile
+     * @param string $content
      * @return array
      * @throws HttpException
      * @throws MissingArgumentException
@@ -75,8 +75,8 @@ class UApi
     /**
      * 实名认证
      *
-     * @param  string  $cardno  身份证号码
-     * @param  string  $name  姓名
+     * @param string $cardno 身份证号码
+     * @param string $name 姓名
      * @return array
      * @throws HttpException
      * @throws MissingArgumentException
@@ -110,10 +110,10 @@ class UApi
     /**
      * 联行号查询
      *
-     * @param  string  $card  银行卡号
-     * @param  string  $province  省份
-     * @param  string  $city  城市名
-     * @param  string  $key  关键字(非必填)
+     * @param string $card 银行卡号
+     * @param string $province 省份
+     * @param string $city 城市名
+     * @param string $key 关键字(非必填)
      * @return array
      * @throws GuzzleException
      * @throws HttpException
@@ -195,7 +195,7 @@ class UApi
      */
     public function express(array $params): array
     {
-        $this->checkRequireParameters(['no', 'type'],$params);
+        $this->checkRequireParameters(['no', 'type'], $params);
         try {
             $json = $this->client()
                 ->post('express', [
@@ -225,15 +225,15 @@ class UApi
      * @throws GuzzleException
      * @throws MissingArgumentException
      */
-    public function queryBankInfo(array $params):array
+    public function queryBankInfo(array $params): array
     {
-        $this->checkRequireParameters(['bankcard'],$params);
+        $this->checkRequireParameters(['bankcard'], $params);
         try {
-            $json=$this->client()
-                ->post('queryBankInfo',[
-                    RequestOptions::JSON=>[
-                        'biz_content' =>[
-                            'bankcard'=>$params['bankcard'],
+            $json = $this->client()
+                ->post('queryBankInfo', [
+                    RequestOptions::JSON => [
+                        'biz_content' => [
+                            'bankcard' => $params['bankcard'],
                         ],
                         'agent_id' => $this->config->getAgentId(),
                         'sign' => $this->sign($params),
@@ -243,10 +243,11 @@ class UApi
             $data = Json::decode($json);
 
             return $data['code'] ? $data['data'] : throw new Exception($data['msg'], $data['code']);
-        }catch (Exception $e){
+        } catch (Exception $e) {
 
         }
     }
+
     /**
      * 验证参数
      *
@@ -258,7 +259,7 @@ class UApi
     protected function checkRequireParameters(array $required, array $params): void
     {
         foreach ($required as $req) {
-            if (! isset($params[$req])) {
+            if (!isset($params[$req])) {
                 throw new MissingArgumentException(
                     sprintf('The %s parameter is required.', $req)
                 );
