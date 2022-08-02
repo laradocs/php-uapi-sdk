@@ -159,7 +159,7 @@ class UApi
      * @throws HttpException
      * @throws MissingArgumentException
      */
-    public function bank3Check(array $params)
+    public function bank3Check(array $params): array
     {
         $this->checkRequireParameters(['accountNo', 'idCard', 'name'], $params);
         try {
@@ -183,6 +183,8 @@ class UApi
             throw new HttpException($e->getMessage(), $e->getCode(), $e);
         }
     }
+
+    
 
     /**
      * 验证参数
