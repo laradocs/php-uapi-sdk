@@ -8,7 +8,6 @@ trait HasSignature
 {
     public function sign(array $params): string
     {
-        var_dump($params);
         return md5(
             sprintf('%s%s', $this->config->getSecretKey(), $this->comm($params))
         );
@@ -19,7 +18,7 @@ trait HasSignature
         $url = '';
         foreach ($params as $key => $param) {
             unset($params[$key]);
-            if (in_array($param)) {
+            if (is_array($param)) {
                 $param = Json::encode($param);
             }
             $url .= "{$key}={$param}&";
