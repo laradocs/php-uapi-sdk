@@ -195,7 +195,7 @@ class UApi
      */
     public function express(array $params): array
     {
-        $this->checkRequireParameters(['no', 'type']);
+        $this->checkRequireParameters(['no', 'type'],$params);
         try {
             $json = $this->client()
                 ->post('express', [
@@ -217,6 +217,36 @@ class UApi
         }
     }
 
+    /**
+     * 银行卡信息查询
+     *
+     * @param string $bankcard
+     * @return array
+     * @throws GuzzleException
+     * @throws MissingArgumentException
+     */
+    public function queryBankInfo(array $params):array
+    {
+        $this->checkRequireParameters(['bankcard'],$params);
+        try {
+            $json=$this->client()
+                ->post('queryBankInfo',[
+                    RequestOptions::JSON=>[
+                        'biz_content' =>[
+                            'bankcard'=>$params['bankcard'],
+                        ],
+                        'agent_id' => $this->config->getAgentId(),
+                        'sign' => $this->sign($params),
+                    ]
+                ])->getBody()
+                ->getContents();
+            $data = Json::decode($json);
+
+            return $data['code'] ? $data['data'] : throw new Exception($data['msg'], $data['code']);
+        }catch (Exception $e){
+
+        }
+    }
     /**
      * 验证参数
      *
