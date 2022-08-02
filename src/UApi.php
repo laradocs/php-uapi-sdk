@@ -30,7 +30,7 @@ class UApi
         $this->config = $config;
     }
 
-    protected function client(): Client
+    public function client(): Client
     {
         return new Client([
             'base_uri' => $this->baseUri,
@@ -124,9 +124,7 @@ class UApi
         $this->checkRequireParameters(['province', 'city', 'card'], $params);
         try {
             $json = $this->client()
-                ->post(
-                    'bankaps',
-                    [
+                ->post('bankaps', [
                         RequestOptions::JSON => [
                             'biz_content' => [
                                 'card' => $params['card'],
