@@ -153,46 +153,42 @@ class UApi
      *
      * @param string $accountNo 银行卡号
      * @param string $idCard 身份证号
-     * @param string $idCard 姓名
+     * @param string $name 姓名
      * @return array
      * @throws GuzzleException
      * @throws HttpException
      * @throws MissingArgumentException
      */
-
     public function bank3Check(array $params)
     {
-        $this->checkRequireParameters(['accountNo','idCard','idCard'],$params);
+        $this->checkRequireParameters(['accountNo', 'idCard', 'name'], $params);
         try {
-            $json=$this->client()
-                ->post(
-                    'bank3Check',
-            [
-                RequestOptions::JSON=>[
-                    'biz_content' =>[
-                        'accountNo'=>$params['accountNo'],
-                        'idCard'=>$params['idCard'],
-                        'name'=>$params['name'],
-                    ],
-                    'agent_id' => $this->config->getAgentId(),
-                    'sign' => $this->sign($params),
-                ]
-            ]
-                )->getBody()
+            $json = $this->client()
+                ->post('bank3Check', [
+                    RequestOptions::JSON => [
+                        'biz_content' => [
+                            'accountNo' => $params['accountNo'],
+                            'idCard' => $params['idCard'],
+                            'name' => $params['name'],
+                        ],
+                        'agent_id' => $this->config->getAgentId(),
+                        'sign' => $this->sign($params),
+                    ]
+                ])->getBody()
                 ->getContents();
-            $data=Json::decode($json);
+            $data = Json::decode($json);
 
-            return $data['code'] ? $data['data'] : throw new Exception($data['msg'],$data['code']);
-        }catch (Exception $e){
-            throw new HttpException($e->getMessage(),$e->getCode(),$e);
+            return $data['code'] ? $data['data'] : throw new Exception($data['msg'], $data['code']);
+        } catch (Exception $e) {
+            throw new HttpException($e->getMessage(), $e->getCode(), $e);
         }
     }
 
     /**
      * 验证参数
      *
-     * @param  array  $required
-     * @param  array  $params
+     * @param array $required
+     * @param array $params
      * @return void
      * @throws MissingArgumentException
      */
