@@ -1,4 +1,4 @@
 {
-  "code": 0,
-  "msg": "未添加短信签名"
+  "code": 1,
+  "data": null
 }
