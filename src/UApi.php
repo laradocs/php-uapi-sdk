@@ -208,6 +208,102 @@ class UApi
     }
 
     /**
+     * 银行卡信息查询
+     *
+     * @param string $bankcard
+     * @return array
+     * @throws GuzzleException
+     * @throws HttpException
+     * @throws MissingArgumentException
+     */
+    public function queryBankInfo(array $params): array
+    {
+        $this->checkRequireParameters(['bankcard'], $params);
+        try {
+            $json = $this->client()
+                ->post('queryBankInfo', [
+                    RequestOptions::JSON => [
+                        'biz_content' => [
+                            'bankcard' => $params['bankcard'],
+                        ],
+                        'agent_id' => $this->config->getAgentId(),
+                        'sign' => $this->sign($params),
+                    ]
+                ])->getBody()
+                ->getContents();
+            return $this->body($json);
+        } catch (Exception $e) {
+            throw new HttpException($e->getMessage(), $e->getCode(), $e);
+        }
+    }
+
+    /**
+     * 获取快递公司信息
+     *
+     * @param string $type 快递公司代码（不传为获取快递公司列表）
+     * @return array
+     * @throws GuzzleException
+     * @throws HttpException
+     * @throws MissingArgumentException
+     */
+    public function getExpressList(array $params): array
+    {
+        $this->checkRequireParameters(['type'], $params);
+        try {
+            $json = $this->client()
+                ->post('getExpressList', [
+                    RequestOptions::JSON => [
+                        'biz_content' => [
+                            'type' => $params['type'],
+                        ],
+                        'agent_id' => $this->config->getAgentId(),
+                        'sign' => $this->sign($params),
+                    ]
+                ])->getBody()
+                ->getContents();
+            return $this->body($json);
+        } catch (Exception $e) {
+            throw new HttpException($e->getMessage(), $e->getCode(), $e);
+        }
+    }
+
+    /**
+     * 银行卡四要素认证
+     *
+     * @param string $accountNo 银行卡号
+     * @param string $idCard 身份证号
+     * @param string $name 姓名
+     * @param string $mobile 手机号码
+     * @return array
+     * @throws GuzzleException
+     * @throws HttpException
+     * @throws MissingArgumentException
+     */
+    public function bank4Check(array $params): array
+    {
+        $this->checkRequireParameters(['accountNo', 'idCard', 'name', 'mobile'], $params);
+        try {
+            $json = $this->client()
+                ->post('bank4Check', [
+                    RequestOptions::JSON => [
+                        'biz_content' => [
+                            'accountNo' => $params['accountNo'],
+                            'idCard' => $params['idCard'],
+                            'name' => $params['name'],
+                            'mobile' => $params['mobile'],
+                        ],
+                        'agent_id' => $this->config->getAgentId(),
+                        'sign' => $this->sign($params),
+                    ]
+                ])->getBody()
+                ->getContents();
+            return $this->body($json);
+        } catch (Exception $e) {
+            throw new HttpException($e->getMessage(), $e->getCode(), $e);
+        }
+    }
+
+    /**
      * 验证参数
      *
      * @param array $required
