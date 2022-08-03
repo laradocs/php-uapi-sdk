@@ -19,11 +19,6 @@ class UApi
      */
     protected Config $config;
 
-    /**
-     * @var string
-     */
-    protected $baseUri = 'http://uapis.ten.sdream.top/apis/api';
-
     public function __construct(Config $config)
     {
         $this->config = $config;
@@ -32,7 +27,7 @@ class UApi
     public function client(): Client
     {
         return new Client([
-            'base_uri' => $this->baseUri,
+            'base_uri' => $this->config->getBaseUri(),
             'timeout' => 1.5,
         ]);
     }
@@ -40,8 +35,8 @@ class UApi
     /**
      * 发送短信
      *
-     * @param  string  $mobile
-     * @param  string  $content
+     * @param  string  $mobile  手机号
+     * @param  string  $content  短信内容
      * @return array
      * @throws MissingArgumentException
      * @throws HttpException
@@ -83,7 +78,7 @@ class UApi
         $this->checkRequireParameters(['cardno', 'name'], $params);
         try {
             $json = $this->client()
-                ->post('idcard', [
+                ->post('apis/api/idcard', [
                         RequestOptions::JSON => [
                             'biz_content' => [
                                 'cardno' => $params['cardno'],
@@ -107,8 +102,8 @@ class UApi
      *
      * @param  string  $card  银行卡号
      * @param  string  $province  省份
-     * @param  string  $city  城市名
-     * @param  string  $key  关键字(非必填)
+     * @param  string  $city  城市
+     * @param  string  $key  关键字(可为空)
      * @return array
      * @throws MissingArgumentException
      * @throws HttpException
@@ -118,7 +113,7 @@ class UApi
         $this->checkRequireParameters(['province', 'city', 'card', 'key'], $params);
         try {
             $json = $this->client()
-                ->post('bankaps', [
+                ->post('apis/api/bankaps', [
                         RequestOptions::JSON => [
                             'biz_content' => [
                                 'card' => $params['card'],
@@ -154,7 +149,7 @@ class UApi
         $this->checkRequireParameters(['accountNo', 'idCard', 'name'], $params);
         try {
             $json = $this->client()
-                ->post('bank3Check', [
+                ->post('apis/api/bank3Check', [
                     RequestOptions::JSON => [
                         'biz_content' => [
                             'accountNo' => $params['accountNo'],
@@ -188,7 +183,7 @@ class UApi
         $this->checkRequireParameters(['no', 'type'], $params);
         try {
             $json = $this->client()
-                ->post('express', [
+                ->post('apis/api/express', [
                     RequestOptions::JSON => [
                         'biz_content' => [
                             'no' => $params['no'],
@@ -209,7 +204,7 @@ class UApi
     /**
      * 银行卡信息查询
      *
-     * @param  string  $bankcard
+     * @param  string  $bankcard  银行卡号
      * @return array
      * @throws MissingArgumentException
      * @throws HttpException
@@ -218,7 +213,7 @@ class UApi
     {
         try {
             $json = $this->client()
-                ->post('queryBankInfo', [
+                ->post('apis/api/queryBankInfo', [
                     RequestOptions::JSON => [
                         'biz_content' => [
                             'bankcard' => $params['bankcard'] ?? '',
@@ -237,7 +232,7 @@ class UApi
     /**
      * 获取快递公司信息
      *
-     * @param  string  $type  快递公司代码（不传为获取快递公司列表）
+     * @param  string  $type  快递公司代码(可为空)
      * @return array
      * @throws MissingArgumentException
      * @throws HttpException
@@ -247,7 +242,7 @@ class UApi
         $this->checkRequireParameters(['type'], $params);
         try {
             $json = $this->client()
-                ->post('getExpressList', [
+                ->post('apis/api/getExpressList', [
                     RequestOptions::JSON => [
                         'biz_content' => [
                             'type' => $params['type'],
@@ -279,7 +274,7 @@ class UApi
         $this->checkRequireParameters(['accountNo', 'idCard', 'name', 'mobile'], $params);
         try {
             $json = $this->client()
-                ->post('bank4Check', [
+                ->post('apis/api/bank4Check', [
                     RequestOptions::JSON => [
                         'biz_content' => [
                             'accountNo' => $params['accountNo'],

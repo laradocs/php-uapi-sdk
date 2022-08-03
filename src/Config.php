@@ -18,10 +18,18 @@ class Config
      */
     protected string $secretKey;
 
-    public function __construct(string $agentId, string $secretKey)
+    /**
+     * 请求的 URL
+     *
+     * @var string
+     */
+    protected string $baseUri;
+
+    public function __construct(string $agentId, string $secretKey, string $baseUri)
     {
         $this->agentId = $agentId;
         $this->secretKey = $secretKey;
+        $this->baseUri = $baseUri;
     }
 
     public function getAgentId(): string
@@ -32,5 +40,10 @@ class Config
     public function getSecretKey(): string
     {
         return $this->secretKey;
+    }
+
+    public function getBaseUri(): string
+    {
+        return $this->baseUri;
     }
 }

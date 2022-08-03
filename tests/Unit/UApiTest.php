@@ -26,7 +26,7 @@ class UApiTest extends TestCase
             ->post(new AnyArgs())
             ->andThrow(new Exception('未添加短信签名', 0));
 
-        $uapi = Mockery::mock(UApi::class, [new Config('xxx', 'xxx')])->makePartial();
+        $uapi = Mockery::mock(UApi::class, [new Config('xxx', 'xxx', 'https://www.example.com')])->makePartial();
         $uapi->shouldReceive('client')->andReturn($client);
 
         $this->expectException(HttpException::class);
@@ -40,7 +40,7 @@ class UApiTest extends TestCase
 
     public function testSms(): void
     {
-        $uapi = Mockery::mock(UApi::class, [new Config('xxx', 'xxx')])->makePartial();
+        $uapi = Mockery::mock(UApi::class, [new Config('xxx', 'xxx', 'https://www.example.com')])->makePartial();
         $uapi->shouldReceive('client')->andReturn($this->client());
         $data = $uapi->sms([
             'mobile' => '13888888888',
@@ -52,7 +52,7 @@ class UApiTest extends TestCase
 
     public function testIdcard(): void
     {
-        $uapi = Mockery::mock(UApi::class, [new Config('xxx', 'xxx')])->makePartial();
+        $uapi = Mockery::mock(UApi::class, [new Config('xxx', 'xxx', 'https://www.example.com')])->makePartial();
         $uapi->shouldReceive('client')->andReturn($this->client());
         $data = $uapi->idcard([
             'cardno' => 'xxx',
@@ -65,7 +65,7 @@ class UApiTest extends TestCase
 
     public function testBankaps(): void
     {
-        $uapi = Mockery::mock(UApi::class, [new Config('xxx', 'xxx')])->makePartial();
+        $uapi = Mockery::mock(UApi::class, [new Config('xxx', 'xxx', 'https://www.example.com')])->makePartial();
         $uapi->shouldReceive('client')->andReturn($this->client());
         $data = $uapi->bankaps([
             'card' => 'xxx',
@@ -80,7 +80,7 @@ class UApiTest extends TestCase
 
     public function testBank3Check(): void
     {
-        $uapi = Mockery::mock(UApi::class, [new Config('xxx', 'xxx')])->makePartial();
+        $uapi = Mockery::mock(UApi::class, [new Config('xxx', 'xxx', 'https://www.example.com')])->makePartial();
         $uapi->shouldReceive('client')->andReturn($this->client());
         $data = $uapi->bank3Check([
             'accountNo' => 'xxx',
@@ -94,7 +94,7 @@ class UApiTest extends TestCase
 
     public function testExpress(): void
     {
-        $uapi = Mockery::mock(UApi::class, [new Config('xxx', 'xxx')])->makePartial();
+        $uapi = Mockery::mock(UApi::class, [new Config('xxx', 'xxx', 'https://www.example.com')])->makePartial();
         $uapi->shouldReceive('client')->andReturn($this->client());
         $data = $uapi->express([
             'no' => '75141039665226',
@@ -107,7 +107,7 @@ class UApiTest extends TestCase
 
     public function testQueryBankInfo(): void
     {
-        $uapi = Mockery::mock(UApi::class, [new Config('xxx', 'xxx')])->makePartial();
+        $uapi = Mockery::mock(UApi::class, [new Config('xxx', 'xxx', 'https://www.example.com')])->makePartial();
         $uapi->shouldReceive('client')->andReturn($this->client());
         $data = $uapi->queryBankInfo([
             'bankcard' => 'xxx',
@@ -119,7 +119,7 @@ class UApiTest extends TestCase
 
     public function testGgetExpressList(): void
     {
-        $uapi = Mockery::mock(UApi::class, [new Config('xxx', 'xxx')])->makePartial();
+        $uapi = Mockery::mock(UApi::class, [new Config('xxx', 'xxx', 'https://www.example.com')])->makePartial();
         $uapi->shouldReceive('client')->andReturn($this->client());
         $data = $uapi->getExpressList([
             'type' => 'ZTO'
@@ -131,7 +131,7 @@ class UApiTest extends TestCase
 
     public function testBank4Check(): void
     {
-        $uapi = Mockery::mock(UApi::class, [new Config('xxx', 'xxx')])->makePartial();
+        $uapi = Mockery::mock(UApi::class, [new Config('xxx', 'xxx', 'https://www.example.com')])->makePartial();
         $uapi->shouldReceive('client')->andReturn($this->client());
         $data = $uapi->bank4Check([
             'accountNo' => 'xxx',
