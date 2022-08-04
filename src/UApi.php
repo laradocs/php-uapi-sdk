@@ -461,9 +461,9 @@ class UApi
     }
 
     /**
-     * 关键字(公司名全称、注册号或社会统一信用代码)
+     * 企业工商查询
      *
-     * @param  string  $keyword
+     * @param  string  $keyword  关键字(公司名全称、注册号或社会统一信用代码)
      * @return array
      * @throws MissingArgumentException
      * @throws HttpException
