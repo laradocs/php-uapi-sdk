@@ -46,7 +46,7 @@ class UApi
         $this->checkRequireParameters(['mobile', 'content'], $params);
         try {
             $json = $this->client()
-                ->post('ThinkSms', [
+                ->post('sms', [
                     RequestOptions::JSON => [
                         'biz_content' => [
                             'mobile' => $params['mobile'],
@@ -283,6 +283,38 @@ class UApi
                             'idCard' => $params['idCard'],
                             'name' => $params['name'],
                             'mobile' => $params['mobile'],
+                        ],
+                        'agent_id' => $this->config->getAgentId(),
+                        'sign' => $this->sign($params),
+                    ]
+                ])->getBody()
+                ->getContents();
+
+            return $this->body($json);
+        } catch (Exception $e) {
+            throw new HttpException($e->getMessage(), $e->getCode(), $e);
+        }
+    }
+
+    /**
+     * 短信验证码
+     *
+     * @param  string  $mobile  手机号
+     * @param  string  $content  短信内容
+     * @return array
+     * @throws MissingArgumentException
+     * @throws HttpException
+     */
+    public function thinkSms(array $params): array
+    {
+        $this->checkRequireParameters(['mobile', 'content'], $params);
+        try {
+            $json = $this->client()
+                ->post('thinkSms', [
+                    RequestOptions::JSON => [
+                        'biz_content' => [
+                            'mobile' => $params['mobile'],
+                            'content' => $params['content'],
                         ],
                         'agent_id' => $this->config->getAgentId(),
                         'sign' => $this->sign($params),

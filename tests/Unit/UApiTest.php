@@ -148,7 +148,7 @@ class UApiTest extends TestCase
     {
         $client = Mockery::mock(Client::class);
         $client->shouldReceive('post')->withAnyArgs()->andReturnUsing(function ($url) {
-            if (str_contains($url, 'ThinkSms')) {
+            if (str_contains($url, 'sms')) {
                 $json = file_get_contents(__DIR__.'/../json/sms.json');
             }
             if (str_contains($url, 'idcard')) {
