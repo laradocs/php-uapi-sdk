@@ -310,7 +310,7 @@ class UApi
         $this->checkRequireParameters(['mobile', 'content'], $params);
         try {
             $json = $this->client()
-                ->post('thinkSms', [
+                ->post('ThinkSms', [
                     RequestOptions::JSON => [
                         'biz_content' => [
                             'mobile' => $params['mobile'],
