@@ -46,7 +46,7 @@ class UApi
         $this->checkRequireParameters(['mobile', 'content'], $params);
         try {
             $json = $this->client()
-                ->post('sms', [
+                ->post('apis/api/sms', [
                     RequestOptions::JSON => [
                         'biz_content' => [
                             'mobile' => $params['mobile'],
@@ -310,7 +310,7 @@ class UApi
         $this->checkRequireParameters(['mobile', 'content'], $params);
         try {
             $json = $this->client()
-                ->post('ThinkSms', [
+                ->post('apis/api/ThinkSms', [
                     RequestOptions::JSON => [
                         'biz_content' => [
                             'mobile' => $params['mobile'],
@@ -344,7 +344,7 @@ class UApi
         $this->checkRequireParameters(['mobile', 'signId', 'templateId', 'params'], $params);
         try {
             $json = $this->client()
-                ->post('apis/api/ThinkSms', [
+                ->post('apis/api/ThinkTplSms', [
                     RequestOptions::JSON => [
                         'biz_content' => [
                             'mobile' => $params['mobile'],
