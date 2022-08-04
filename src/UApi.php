@@ -46,7 +46,7 @@ class UApi
         $this->checkRequireParameters(['mobile', 'content'], $params);
         try {
             $json = $this->client()
-                ->post('sms', [
+                ->post('ThinkSms', [
                     RequestOptions::JSON => [
                         'biz_content' => [
                             'mobile' => $params['mobile'],
@@ -223,6 +223,7 @@ class UApi
                     ]
                 ])->getBody()
                 ->getContents();
+
             return $this->body($json);
         } catch (Exception $e) {
             throw new HttpException($e->getMessage(), $e->getCode(), $e);
@@ -252,6 +253,7 @@ class UApi
                     ]
                 ])->getBody()
                 ->getContents();
+
             return $this->body($json);
         } catch (Exception $e) {
             throw new HttpException($e->getMessage(), $e->getCode(), $e);
@@ -287,6 +289,169 @@ class UApi
                     ]
                 ])->getBody()
                 ->getContents();
+
+            return $this->body($json);
+        } catch (Exception $e) {
+            throw new HttpException($e->getMessage(), $e->getCode(), $e);
+        }
+    }
+
+    /**
+     * 模板短信
+     *
+     * @param  string  $mobile  手机号
+     * @param  string  $signId  签名编号
+     * @param  string  $templateId  模板编号
+     * @param  string  $params  参数
+     * @return array
+     * @throws MissingArgumentException
+     * @throws HttpException
+     */
+    public function thinkTplSms(array $params): array
+    {
+        $this->checkRequireParameters(['mobile', 'signId', 'templateId', 'params'], $params);
+        try {
+            $json = $this->client()
+                ->post('apis/api/ThinkSms', [
+                    RequestOptions::JSON => [
+                        'biz_content' => [
+                            'mobile' => $params['mobile'],
+                            'signId' => $params['signId'],
+                            'templateId' => $params['templateId'],
+                            'params' => $params['params'],
+                        ],
+                        'agent_id' => $this->config->getAgentId(),
+                        'sign' => $this->sign($params),
+                    ]
+                ])->getBody()
+                ->getContents();
+
+            return $this->body($json);
+        } catch (Exception $e) {
+            throw new HttpException($e->getMessage(), $e->getCode(), $e);
+        }
+    }
+
+    /**
+     * 银行级短信
+     *
+     * @param  string  $mobile
+     * @param  string  $content
+     * @return array
+     * @throws MissingArgumentException
+     * @throws HttpException
+     */
+    public function lySms(array $params): array
+    {
+        $this->checkRequireParameters(['mobile', 'content'], $params);
+        try {
+            $json = $this->client()
+                ->post('apis/api/LySms', [
+                    RequestOptions::JSON => [
+                        'biz_content' => [
+                            'mobile' => $params['mobile'],
+                            'content' => $params['content'],
+                        ],
+                        'agent_id' => $this->config->getAgentId(),
+                        'sign' => $this->sign($params),
+                    ]
+                ])->getBody()
+                ->getContents();
+
+            return $this->body($json);
+        } catch (Exception $e) {
+            throw new HttpException($e->getMessage(), $e->getCode(), $e);
+        }
+    }
+
+    /**
+     * 快递单号识别
+     *
+     * @param  string  $no
+     * @return array
+     * @throws MissingArgumentException
+     * @throws HttpException
+     */
+    public function exCompany(array $params): array
+    {
+        $this->checkRequireParameters(['no'], $params);
+        try {
+            $json = $this->client()
+                ->post('apis/api/exCompany', [
+                    RequestOptions::JSON => [
+                        'biz_content' => [
+                            'no' => $params['no'],
+                        ],
+                        'agent_id' => $this->config->getAgentId(),
+                        'sign' => $this->sign($params),
+                    ]
+                ])->getBody()
+                ->getContents();
+
+            return $this->body($json);
+        } catch (Exception $e) {
+            throw new HttpException($e->getMessage(), $e->getCode(), $e);
+        }
+    }
+
+    /**
+     * 手机号码实名认证
+     *
+     * @param  string  $idCardNo  身份证号
+     * @param  string  $name  姓名
+     * @param  string  $mobile  手机号
+     * @return array
+     * @throws MissingArgumentException
+     * @throws HttpException
+     */
+    public function telVertify(array $params): array
+    {
+        $this->checkRequireParameters(['idCardNo', 'name', 'mobile'], $params);
+        try {
+            $json = $this->client()
+                ->post('apis/api/telVertify', [
+                    RequestOptions::JSON => [
+                        'biz_content' => [
+                            'idCardNo' => $params['idCardNo'],
+                            'name' => $params['name'],
+                            'mobile' => $params['mobile'],
+                        ],
+                        'agent_id' => $this->config->getAgentId(),
+                        'sign' => $this->sign($params),
+                    ]
+                ])->getBody()
+                ->getContents();
+
+            return $this->body($json);
+        } catch (Exception $e) {
+            throw new HttpException($e->getMessage(), $e->getCode(), $e);
+        }
+    }
+
+    /**
+     * 关键字(公司名全称、注册号或社会统一信用代码)
+     *
+     * @param  string  $keyword
+     * @return array
+     * @throws MissingArgumentException
+     * @throws HttpException
+     */
+    public function businessInfo(array $params): array
+    {
+        $this->checkRequireParameters(['keyword'], $params);
+        try {
+            $json = $this->client()
+                ->post('apis/api/businessInfo', [
+                    RequestOptions::JSON => [
+                        'biz_content' => [
+                            'keyword' => $params['keyword'],
+                        ],
+                        'agent_id' => $this->config->getAgentId(),
+                        'sign' => $this->sign($params),
+                    ]
+                ])->getBody()
+                ->getContents();
+
             return $this->body($json);
         } catch (Exception $e) {
             throw new HttpException($e->getMessage(), $e->getCode(), $e);
@@ -318,7 +483,7 @@ class UApi
      * @param  string  $json
      * @return array
      */
-    public function body(string $json): array
+    protected function body(string $json): array
     {
         $data = Json::decode($json);
 
